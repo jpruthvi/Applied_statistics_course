@@ -1,0 +1,79 @@
+---
+title: "Assignment9"
+author: "Pruthvi(CE16B034)"
+date: "4/16/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1
+The data are contained in the file titled Assignment.Data.9 in sheet 1 (Question1).
+A researcher reported the median grain size of sand (in mm) in 59 alluvial aquifers in the Ganga River Valley. The yield of each aquifer (in gal/day/ft2) was also reported. The researcher is interested in predicting yield from grain size. Thus, denote yield by y and grain size by x.
+```{r}
+library(xlsx)
+xm <- read.xlsx("Assignment.Data.9.xlsx",1)
+xm
+```
+
+## (a) Generate a scatterplot for these data, with grain size on the horizontal axis, and yield on the vertical axis.
+```{r}
+attach(xm)
+plot(Yield~GrainSize,xlab="GrainSize",ylab="Yield",main="Yield v/s GrainSize",col = "Blue")
+```
+
+## (b) Find the least squares estimates of α and β in the model : 𝔼(Y|x)=α+βx
+```{r}
+xm.lm <- lm(Yield~GrainSize,data = xm)
+xm.lm
+cat("From above we see theat that the least square estimates of\nalpha = 744.979\nbeta = -9.294")
+# We now plot the above genarated line on the scatter plot to get an idea of it
+plot(Yield~GrainSize,xlab="GrainSize",ylab="Yield",main="Yield v/s GrainSize")
+abline(xm.lm,col = "Red")
+```
+
+## (c) Test the hypothesis at a significance level , a=0.01 , H0:β=0 or H1:β≠0
+```{r}
+xm.summary <- summary(xm.lm)
+xm.summary$coefficients[2,]
+print("Since p-value for beta = 744.979 estimate is 7.543301e-09(from last column) < 0.01 level of significance we reject the null hypothesis and hence beta is not equal to zero.")
+```
+
+## (d) Compute the residuals for these data.
+```{r}
+# the residual values in order are as follows
+residual <- data.frame(resid(xm.lm))
+colnames(residual) <- c("Residuals")
+residual
+```
+
+## (e) How much variation in the above model is explained by the given data?
+```{r}
+xm.summary$r.squared
+print("Therefore about r-squared = 44.605% of the variation in above data is explained by the given model")
+```
+
+# Question 2
+The data are contained in the file titled Assignment.Data.9 in sheet 2 (Question2).
+A new health psychologist wanted to explore alcohol consumption along with other maladaptive coping behaviours and the effect they had on diet quality. An advert was placed in a local hospital for volunteers and a group of 25 people volunteered to take part in this pilot study. The respondents reported on their Healthy Eating Index (HEI), drinking frequency (in units per week), smoking frequency (in cigarettes per day) and caffeine consumption (in cups of coffee per day).
+```{r}
+xl <- read.xlsx("Assignment.Data.9.xlsx",2)
+xl
+```
+
+## The Prediction
+Null Hypothesis H0: Level of alcohol consumption and other maladaptive coping behaviours will not significantly predict HEI scores.
+Alternative Hypothesis H1: Alcohol consumption levels and other maladaptive coping behaviours will significantly predict HEI scores.
+You have been asked to carry out analysis and provide an interpretation for the health psychologist.
+```{r}
+# we need to see the f-statistic and it's corresponding p value after fitting a linear model to the above data
+xl.lm <- lm(HEI~Drinking.Frequency+Units.Consumed+Smoking+Caffeine,data=xl)
+xl.summary <- summary(xl.lm)
+# the important coefficients and statisitcs 
+xl.summary
+# f-statisic
+xl.summary$fstatistic
+print("Also from the above summary we see that the p-value for the f-statistic above is 2.556e-06 which means we can reject the null hypothesis for any practical value of the level of significance")
+```

@@ -1,0 +1,99 @@
+---
+title: "Assignment5"
+author: "Pruthvi(CE16B034)"
+date: "3/17/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1
+## In order to ensure efficient usage of a server, it is necessary to estimate the mean number of concurrent users. According to records, the sample mean and sample standard deviation of number of concurrent users at 100 randomly selected times is 37.7 and 9.2, respectively. Construct a 90% confidence interval for the mean number of concurrent users.
+
+```{r}
+# (X - mu) / (S / sqrt(n)) ~ t distribution with n-1 degrees of freedom 
+X_samp = 37.7
+S = 9.2
+error_margin = qt(0.95,99) * S / sqrt(100)
+X_samp + c(-error_margin,error_margin)
+```
+
+# Question 2
+## We observed 28 successes in 70 independent Bernoulli trials. Compute a 90% confidence interval for the population proportion p.
+
+```{r}
+# sample mean = p
+# sd = p(1-p)
+X_bar = 28/70
+sigma_sd = sqrt(28/70 * (1 - 28/70))
+error_margin = qnorm(0.95) * sigma_sd / sqrt(70)
+X_bar + c(-error_margin,error_margin)
+```
+
+# Question 3 
+# The operations manager of a large production plant would like to estimate the mean amount of time a worker takes to assemble a new electronic component. Assume that the standard deviation of this assembly time is 3.6 minutes.
+
+## (a) After observing 120 workers assembling similar devices, the manager noticed that their average time was 16.2 minutes. Construct a 92% confidence interval for the mean assembly time.
+
+```{r}
+# given sigma = 3.6
+# sample mean = 16.2
+# (X-mu)/(sigma/sqrt(n)) ~ standard normal distribution
+sigma_sd = 3.6
+X_bar = 16.2
+error_margin = qnorm(0.96) * sigma_sd / sqrt(120)
+X_bar + c(-error_margin,error_margin)
+```
+
+## (b) How many workers should be involved in this study in order to have the mean assembly time estimated up to ±15 seconds with 92% confidence?
+
+```{r}
+# from the (X-mu)/(sigma/sqrt(n)) ~ standard normal distribution we estimate the formula for n
+(qnorm(0.96) * sigma_sd / 0.25) ** 2
+```
+
+# Question 4
+# Suppose a consumer advocacy group would like to conduct a survey to find the proportion p of consumers who bought the newest generation of an MP3 player were happy with their purchase.
+## (a)
+## How large a sample n should they take to estimate p with 2% margin of error and 90% confidence?
+
+```{r}
+# margin of error = 0.02
+# for the largest n we estimate the largest possible variance 
+# sigma = p * (1-p)
+# max val of sigma is at p = 0.5, sigma = 0.5 * 0.5
+n = (qnorm(0.95) * sqrt(0.5 * 0.5) / 0.02) ** 2
+n
+```
+
+## (b)
+## The advocacy group took a random sample of 1000 consumers who recently purchased this MP3 player and found that 400 were happy with their purchase. Find a 95% confidence interval for p.
+
+```{r}
+# sample mean = 400/1000
+# sd = sqrt( 400/1000 * (1 - 400/1000) )
+X_bar = 400/1000
+sigma_sd = sqrt(400/1000 * (1 - 400/1000))
+error_margin = qnorm(0.975) * sigma_sd / sqrt(1000)
+X_bar + c(-error_margin,error_margin)
+```
+
+# Question 5
+# Which of the following statements is true.
+## I. When the margin of error is small, the confidence level is high. II. When the margin of error is small, the confidence level is low. III. A confidence interval is a type of point estimate. IV. A population mean is an example of a point estimate.
+##A) I only
+##B) II only
+##C) III only
+##D) IV only.
+##E) None of the above.
+
+```{r}
+# we can't tell about the confidence level from margin of error because the variance is unknown, even if the margin of-
+# error is low, confidence level may be high or low depending on the variance
+# Confidence interval is not a point estimate it is a interval estimate
+# population mean is not a estimate, it is the "true" mean, sample mean is an example of point estimate
+# None the options are correct, so correct option is (E)
+print("E")
+```

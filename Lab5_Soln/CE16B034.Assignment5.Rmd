@@ -1,0 +1,81 @@
+---
+title: "Assignment5"
+author: "Pruthvi(CE16B034)"
+date: "3/6/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1 Dataset - diamonds
+```{r}
+# loading required libraries
+library(ggplot2)
+# display the first 6 rows of the 'diamonds' dataset so that we can see the columns,etc
+head(diamonds)
+```
+
+## (a) Specify the continuous variables and categorical variables in the dataset.
+```{r}
+# prints the continous variables in 'diamonds' dataset , we check if the columns are of 'numeric' or 'integer' class
+colnames(diamonds[sapply(diamonds,class) == "numeric" | sapply(diamonds,class) == "integer"])
+# prints the categorical variables in 'diamonds' dataset , we take the comlement of the above set
+colnames(diamonds[sapply(diamonds,class) != "numeric" & sapply(diamonds,class) != "integer"])
+```
+
+## (b) How is the carat related to price? Visualise using the function ggplot() and the most appropriate geom_function(). Assign the output to the variable “Plot”. Customize your plot by adding a suitable title and axis labels.
+```{r}
+# we have made a scatter plot, with a blue polynomial regression line to depict the relation between variables.
+# we use ggtitle to add title and xlab and ylab to add x-axis and y-axis labels respectively
+Plot <- ggplot(diamonds, aes(carat,price))+geom_point()+geom_smooth()+ggtitle("price v/s carat of diamonds")+xlab("Carat")+ylab("Price")
+Plot
+```
+
+## (c)  Redraw the plot with alpha=0.4, color= blue, size=2 and a “dark red” regression line using an appropriate linear model method.
+```{r}
+# redraw the plot with linear regression line using the display formats specified in question
+# we use 'method = lm' to specify we need a linear regression line
+ ggplot(diamonds, aes(carat,price,colour="dark red"))+geom_point(colour="blue",alpha=0.4,size=2)+geom_smooth(method = lm)
+```
+
+## (d) Visualise the weight and price of the carat using a third variable “cut”.
+```{r}
+# we visualize the weight of the diamonds in carats and price wrt the categorical variable 'cut'
+ggplot(diamonds,aes(carat,price,colour=cut))+geom_point(alpha = 1,size = 0.5)
+```
+
+## (e) Recreate the plot in (d) by creating a separate facet for each value of the variable “cut” using facet_wrap().
+```{r}
+# here we use the facet_wrap function to achieve the desired result
+ggplot(diamonds, aes(carat,price))+geom_point(alpha = 0.5,size = 0.5,colour="orange")+facet_wrap(~cut)
+```
+
+## (f) Using facet_grid(), visualise the relationship between carat vs. Price and Clarity based on the different values of “cut” and write the analysis.
+```{r}
+# we use facet_grid with both cut and clarity to visualize the required graphs
+# from below graph we can see that as quality changes from fair to ideal price is increasing
+# also we can see that majority of the diamonds are focused in the mid categories
+ggplot(diamonds, aes(carat,price))+geom_point(alpha = 0.5,size = 0.5,colour="orange")+facet_grid(facets = ~cut~clarity)
+```
+
+##  (g) Visualise clarity and cut vs price for 54,000 diamonds using boxplot and write the analysis.
+```{r}
+# we first visualize clarity v/s price using boxplot
+# we see from the below graph that median value of the price is decreases as we move from
+# left to right in terms of clarity (i.e. from I1 to If)
+# we can also see that the maximum and minimum value of price is remains more or less the same
+ggplot(diamonds, aes(clarity,price,fill=clarity))+geom_boxplot()
+# next we visuzlize cut v/s price using boxplot
+# Suprisingly we see that for all types of cuts the median of the price is more or less the same!
+# The max and min values too are more or less the same !
+ggplot(diamonds, aes(cut,price,fill=cut))+geom_boxplot()
+```
+
+## (h)  Using geom_density(), visualise the relationship between price and cut. Use alpha=0.5.
+```{r}
+# we use both geom_density and facet_grid to achieve the desired result
+ggplot(diamonds, aes(price,colour=cut,fill=cut))+geom_density(alpha = 0.5)+facet_grid(~cut)
+```
+

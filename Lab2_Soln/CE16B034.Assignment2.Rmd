@@ -1,0 +1,161 @@
+---
+title: "Assignment 2"
+author: "Pruthvi(CE16B034)"
+date: "29 January 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1
+Write a function **Piecewise** to compute the following 2-dimensional function f(x,y):  
+f(x,y) = 4x + 4y   ; x>=0 , y>0  
+f(x,y) = -4x + 4y  ; x<0  , y>=0  
+f(x,y) = -4x - 4y  ; x<=0 , y<0  
+f(x,y) = 4x - 4y   ; x>0  , y<=0  
+f(x,y) = 0         ; otherwise  
+The function sholud have the declaration: **Piecewise<-function(x,y)**, where x and y are number inputs.
+```{r}
+# fuction definition as in the question
+Piecewise <- function(x=0,y=0){       # sets the default values of x and y to be zero
+  # the following is the series of if-else statements which do the job as required in the question
+  if(x>=0 && y>0){
+    return (4*x + 4*y)
+  }else if(x<0 && y>=0){
+    return (-4*x + 4*y)
+  }else if(x<=0 && y<0){
+    return (-4*x - 4*y)
+  }else if(x>0 && y<= 0){
+    return (4*x - 4*y)
+  }else{
+    return (0)
+  }
+}
+```
+Calculate the following:
+</br>(a). Piecewise(2,2)
+```{r}
+Piecewise(2,2)
+```
+(b). Piecewise(2,-2)
+```{r}
+Piecewise(2,-2)
+```
+(c). Piecewise(-2,2)
+```{r}
+Piecewise(-2,2)
+```
+(d). Piecewise(-2,-2)
+```{r}
+Piecewise(-2,-2)
+```
+(e). Piecewise(0,0)
+```{r}
+Piecewise(0,0)
+```
+(f). Piecewise(0,2)
+```{r}
+Piecewise(0,2)
+```
+(g). Piecewise(0,-2)
+```{r}
+Piecewise(0,-2)
+```
+(h). Piecewise(2,0)
+```{r}
+Piecewise(2,0)
+```
+
+# Question 2
+Write a function Days.in.Month to display the number of days in a given month. The function should have the header: Days.in.Month <- function(month,leap), where the input month is an all-lower-case string denoting the first three letters of the month. The input leap has logical value (0 or 1) indicating the leap year. February has 28 days (29 days in leap year). The following months have 30 days: April, June, September and November. Other months have 31 days. In cases where the inputs are invalid, the output days should be the string Invalid inputs. Use switch statements. Calculate the following:
+```{r}
+# function has been defined as required in the question.
+Days.in.Month <- function(month,leap){
+# if the leap year has invalid input then we return "Invalid inputs" and terminate the function
+if(leap<0 || leap>1){
+  print("Invalid inputs")
+  return()
+}
+# the following switch statement has months as options with no of days in it as expression
+# if the month is not in the defined set of names then we return 'Invalid inputs' as the default case
+# the default case is in the end
+switch(month,'jan'=31,'feb'=28+leap,'mar'=31,'apr'=30,'may'=31,'jun'=30,'jul'=31,'aug'=31,'sep'=30,'oct'=31,'nov'=30,'dec'=31,'Invalid inputs')
+}
+```
+(a). Days.in.Month('jan',0).
+```{r}
+Days.in.Month('jan',0)
+```
+(b). Days.in.Month('feb',0).
+```{r}
+Days.in.Month('feb',0)
+```
+(c). Days.in.Month('feb',1).
+```{r}
+Days.in.Month('feb',1)
+```
+(d). Days.in.Month('apr',0).
+```{r}
+Days.in.Month('apr',0)
+```
+(e). Days.in.Month('aug',1).
+```{r}
+Days.in.Month('aug',1)
+```
+(f). Days.in.Month('oct',0).
+```{r}
+Days.in.Month('oct',0)
+```
+(g). Days.in.Month('nov',1).
+```{r}
+Days.in.Month('nov',1)
+```
+(h). Days.in.Month('Dec',0).
+```{r}
+# here it is invalid input because 'Dec' is not all lower case
+Days.in.Month('Dec',0)
+```
+# Question 3
+Write a function Trans using for loops to calculate the transpose of a matrix. The function should have the header: Trans <- function(Mat), where the input Mat is a matrix. (Do not use the in-built transpose function). Take a 3×4 matrix and find its transpose.
+```{r}
+# function has been defined as required in the question
+Trans<-function(Mat){
+# first we allocate an empty matrix in memory
+# for this matrix it's no of col's = no of row's of input matrix because it is transpose
+ans = matrix(nrow=ncol(Mat),ncol=nrow(Mat))
+# we iterate through all elements of input matrix and set the element of ans ith row jth col = 
+# jth row ith col of input matrix
+for(i in 1:nrow(Mat)){
+  for(j in 1:ncol(Mat)){
+    ans[j,i] = Mat[i,j]
+  }
+}
+return (ans)
+}
+# Taking an example 3 * 4 matrix
+Mat = matrix(1:12,nrow=3,byrow=T)
+Mat
+Trans(Mat)
+```
+
+# Question 4
+Write a program which uses a while loop to sum the cubes of positive integers (starting from 1) until the total exceeds 6000. Print the final total and the last number to be cubed and added.
+```{r}
+# total sum has been stored in variable 'sum'
+sum = 0
+i = 1
+# during each loop we check whether sum has exceeded 6000 else we increment i by 1 
+# and again add it's cube to sum
+
+# last number to be cubed and added is just i - 1 because we have incremented it one more time after
+# the sum has been exceeded by 6000
+while(sum <= 6000){
+  sum = sum + i^3
+  i = i + 1
+}
+cat("Final Total: ",sum)
+cat("Last number to be cubed and added: ",i-1)
+```
+

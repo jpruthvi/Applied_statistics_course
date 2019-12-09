@@ -1,0 +1,182 @@
+---
+title: "Assignment 1"
+author: "Pruthvi(CE16B034)"
+date: "24/01/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Question 1
+Create a matrix ‘M’ with 6 row and 6 column (with the column and row names).
+
+```{r}
+# Creating a matrix M with elements as the numbers from 1 to 36.
+M = matrix(1:36,nrow=6,byrow=TRUE)
+# Now we name the rows and columns of the matrix as row1, col1, and so on.
+rownames(M) = c('row1','row2','row3','row4','row5','row6')
+colnames(M) = c('col1','col2','col3','col4','col5','col6')
+# display M
+M
+```
+
+## (a)
+Create a vector ‘V’ containing the diagonal elements of the above matrix ‘M’. (Don’t write manually!)
+
+```{r}
+# We use the diag function
+V = diag(M)
+# display the vector
+V    
+```
+
+## (b)
+Create a matrix ‘M1’ containing the first 3 rows and last 3 columns of ‘M’. (Don’t write manually!)
+
+```{r}
+# First 3 rows of M1 are first 3 rows of M and last 3 rows of M1 are last 3 columns of M
+M1 = matrix(c(M[1,],M[2,],M[3,],M[,4],M[,5],M[,6]),nrow=6,byrow=TRUE)
+# dislplay the required matrix
+M1
+```
+
+## (c)
+Convert the matrix ‘M’ into data-frame.
+
+```{r}
+# To convert the matrix 'M' into data-frame we use the 'as.data.frame()' method
+as.data.frame(M)
+```
+
+# Question 2
+Import the data file ‘parusater.txt’ from the web as:
+Data <- read.table(“http://www.oikostat.ch/data/parusater.txt”, header=TRUE)
+
+```{r}
+# we use read.table to get the required data
+Data<-read.table("http://www.oikostat.ch/data/parusater.txt",header = TRUE)
+# display the read data
+Data
+```
+
+## (a)
+Extract the column names
+
+```{r}
+# We call the colnames function on 'Data' 
+CName = colnames(Data)
+# Display the extracted column names
+CName
+```
+
+## (b)
+Calculate the number of rows and columns of “Data”
+
+```{r}
+# nrows and ncols function can be directly used to get number of rows and columns directly
+# We use cat function to display the string and variable output directly
+cat("No of rows: ",nrow(Data))
+cat("No of cols: ",ncol(Data))
+```
+
+## (c)
+Extract the “age” from “Data” and store in a variable ‘Age’. Find the maximum and minimum value of ‘Age’
+
+```{r}
+# We use $ to extract the age as a vector
+Age = Data$age
+# Displays the extracted vector
+Age
+# Minimum
+min(Age)
+# Maximum
+max(Age)
+```
+
+## (d)
+Remove all the rows with the value of sex = 2 and store it in a new variable ‘NewData’
+```{r}
+# We are now deciding whether a particular row is present or not by comparing 'sex' column 
+NewData = Data[Data$sex != 2,]
+# Display Newdata
+NewData
+```
+
+# Question 3
+Create a matrix ‘Mat’ by rows instead of by columns of order 6 and some entries should be non-integer
+
+```{r}
+# We use seq with by = 0.5 to generate some non-integer values
+Mat = matrix(seq(1,18.5,by=0.5),nrow=6,byrow=T)
+# Display the matrix (6 * 6)
+Mat
+```
+## (a)
+Find the transpose of the matrix
+
+```{r}
+# We use 't()' function to generate transpose of the matrix
+t(Mat)
+```
+
+## (b)
+Calculate the determinant of the matrix
+
+```{r}
+# We use 'det()' function to find the determinant of the matrix
+det(Mat)
+```
+
+## (c)
+If the matrix is non-singular, calculate its inverse
+
+```{r}
+# Here the matrix is singular since the det(Mat) = 0, hence we can't find it's inverse
+# However if the Matrix were non-singular we could've used solve(Mat) to find it's inverse
+# solve(Mat)
+```
+
+## (d)
+Assign 0 for non-integer entries. (Don’t assign 0 manually!)
+
+```{r}
+# is.integer() cannot be used here because R is treating all these values as doubles
+# Instead we check for x != floor(x) , which means it is not integer
+# Then we assign all such values to 0
+Mat[Mat != floor(Mat)] = 0
+# Display the modified Matrix
+Mat
+```
+
+# Question 4
+Create a data-frame ‘Cricket’ containing atleast 10 International cricket players details of ODI matches. The columns name are as follows: Name, Total Score, Highest Score, Century, Half-century, Wicket, Six, Four, Average, Strike Rate
+
+```{r}
+# vec1 contains the list of all cricket players
+# All of the data below has been taken from https://en.wikipedia.org
+vec1 = c("Sachin Tendulkar","Kumar Sangakkara","Ricky Ponting","Sanath Jayasuriya","Mahela Jayawardene","Inzamam ul-Haq","Jacques Kallis","Sourav Ganguly","Rahul Dravid","Virat Kohli")
+# vec2 contains their total scores
+vec2 = c(18426,14234,13704,13430,12650,11739,11739,11363,10889,10430)
+# vec3 contains their highest scores across all cricket matches
+vec3  = c(248,319,257,189,374,329,224,239,270,243)
+# vec4 contains their Number of century's
+vec4 = c(49,25,30,28,19,10,17,22,12,39)
+# vec5 contains their Number of half-century's
+vec5 = c(96,93,82,68,77,83,86,72,83,48)
+# vec6 contains the number of wickets
+vec6 = c(46,0,5,98,6,0,292,32,1,0)
+# vec7 contains the number of 6's in Tests
+vec7 = c(69,51,73,59,61,48,97,57,21,731)
+# vec8 contains the number of 4's in Tests
+vec8 = c(2058,1491,1508,910,1388,1105,1485,900,1654,19)
+# vec9 contains the Average
+vec9 = c(44.83,41.98,42.03,32.36,33.01,39.52,44.36,41.02,39.16,59.10)
+# vec10 contains the Strike Rate
+vec10 = c(86.23,78.88,80.39,91.20,78.67,74.24,72.89,73.70,71.24,92.65)
+Cricket = data.frame(Name=vec1,TotalScore=vec2,HighestScore=vec3,Century=vec4,HalfCentury=vec5,Wicket=vec6,Six=vec7,Four=vec8,Average=vec9,StrikeRate=vec10,stringsAsFactors=F)
+Cricket
+# Summary
+summary(Cricket)
+```
+

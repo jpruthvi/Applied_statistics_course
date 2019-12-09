@@ -1,0 +1,98 @@
+---
+title: "Assignment 7"
+author: "Pruthvi(CE16B034)"
+date: "4/7/2019"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1
+A random sample of 100 recorded deaths in the United States during the past year showed an average life span of 71.8 years. Assuming a population standard deviation of 8.9 years, does this seem to indicate that the mean life span today is greater than 70 years? Use a 0.01 level of significance.
+
+```{r}
+# this is an upper tail test of the sample mean given population std deviation.
+# H0 : mu = 70
+# H1 : mu > 70
+xbar <- 71.8
+mu0 = 70
+sigma <- 8.9
+n = 100
+z <- (xbar - mu0) / (sigma / (n ^ 0.5))
+alpha = 0.01
+z_alpha = qnorm(alpha,lower.tail = F)
+# z val
+z
+# z_alpha val
+z_alpha
+# check if z < z_alpha
+z < z_alpha
+# since z < z_alpha , we fail to reject the null hypothesis that mean is greater than 70 with 0.01 level of significance
+```
+
+# Question 2
+A manufacturer claims that the average tensile strength of thread A exceeds the average tensile strength of thread B by at least 12 kilograms. To test this claim, 50 pieces of each type of thread were tested under similar conditions. Type A thread had an average tensile strength of 86.7 kilograms with a standard deviation of 6.28 kilograms, while type B thread had an average tensile strength of 77.8 kilograms with a standard deviation of 5.61 kilograms. Test the manufacturer’s claim using a 0.01 level of significance.
+
+```{r}
+# H0 : mu1 - mu0 = 12
+# H1 : mu1 - mu0 < 12
+x1bar = 86.7
+sigma1 = 6.28
+n1 = 50
+x2bar = 77.8
+sigma2 = 5.61
+n2 = 50
+z = ((x1bar - x2bar) - 12) / (sigma1^2/n1 + sigma2^2/n2 )^0.5
+alpha = 0.01
+z_alpha = qnorm(alpha)
+# our z - value
+z
+# value of z corresponding to our level of significance
+z_alpha
+z < z_alpha
+# since z < z_alpha we fall in critical region so we reject null hypothesis
+# So the manufacture's claim is false
+```
+
+# Question 3
+It is believed that at least 60% of the residents in a certain area favor an annexation suit by a neighboring city. What conclusion would you draw if only 110 in a sample of 200 voters favored the suit? Use a 0.01 level of significance.
+
+```{r}
+# H0 : p = 0.6
+# H1 : p < 0.6
+phat = 110/200
+p = 0.6
+n = 200
+z = (phat - p) / (phat * (1 - phat) / n)^0.5
+alpha = 0.01
+z_alpha = qnorm(alpha)
+# our z value
+z
+# z value corresponding to our level of significance
+z_alpha
+z < z_alpha
+# Since z > z_alpha, our z does not lie in the rejection region, so we fail to reject null hypothesis
+# So our claim that p is atleast 60% is true with 0.01 level of significance
+```
+
+# Question 4
+In a controlled laboratory experiment, scientists at the University of Minnesota discovered that 25% of a certain strain of rats subjected to a 20% coffee bean diet and then force-fed a powerful cancer-causing chemical later developed cancerous tumors. Would we have reason to believe that the proportion of rats developing tumors when subjected to this diet has increased if the experiment were repeated and 16 of 48 rats developed tumors? Use a 0.01 level of significance.
+
+```{r}
+# H0 : p = 0.25
+# H1 : p > 0.25
+phat = 16/48
+p = 0.25
+n = 48
+z = (phat - p) / (phat * (1 - phat) / n)^0.5
+alpha = 0.01
+z_alpha = qnorm(alpha,lower.tail = F)
+# our z value
+z
+# z value corresponding to our level of significance
+z_alpha
+z < z_alpha
+# since z < z_alpha, our z does not lie in the rejection region so we fail to reject null hypothesis
+# So we do not have sufficient evidence to believe that proportion has increased with 0.01 level of significance
+```

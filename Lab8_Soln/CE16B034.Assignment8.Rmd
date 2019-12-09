@@ -1,0 +1,102 @@
+---
+title: "Assingment 8"
+author: "Pruthvi(CE16B034)"
+date: "4/14/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1
+The data represent the diameter of pencils manufactured by a factory.
+```{r}
+# Using the xlsx library to read the given file.
+library(xlsx)
+# Using read.xlsx function to read sheet 1 of data
+xl <- read.xlsx("QCC.xlsx",1)
+xl
+```
+
+## (a) Calculate the control limits for X¯ chart and construct the chart.
+```{r}
+# constructing range, mean and sd values
+xl <- cbind(xl,apply(xl,1,mean),t(diff(apply(xl[,1:4],1,range))),apply(xl,1,sd))
+colnames(xl) <- c('x1','x2','x3','x4','x.bar','r','s')
+xl
+library(qcc)
+batch = rep(1:30,each=4)
+V <- qcc.groups(c(xl[,'x1'],xl[,'x2'],xl[,'x3'],xl[,'x4']),batch)
+V
+# X bar chart
+q1 <- qcc(V,type = 'xbar')
+print('From above graph information we see that,\nLCL = 63.17826\nUCL = 64.95315')
+```
+
+## (b) Determine the control limits for R and S charts and draw the charts.
+```{r}
+# R chart
+q2 <- qcc(V,type='R')
+print('From above graph information we see that,\nLCL = 0\nUCL = 2.779735')
+# S chart
+q3 <- qcc(V,type='S')
+print('From above graph information we see that,\nLCL = 0\nUCL = 1.360366')
+```
+
+## (c) Is the process under control? If the answer is No, eliminate out of control points and construct revised control limits and control charts.
+```{r}
+# find out all the points violating the control process
+shewhart.rules(q1)
+shewhart.rules(q2)
+shewhart.rules(q3)
+out = c(11,26,14,29,7,18,19,20,21,22,23,24,25,8,9,10,16,3,17,27)
+V2 = V[-out,]
+V2
+# Redraw the x bar plot, with revised control limits
+q11=qcc(V2,type = "xbar")
+# Redraw the R plot, with revised control limits
+q22=qcc(V2,type = "R")
+# Redraw the S plot, with revised control limits
+q33=qcc(V2,type = "S")
+```
+
+## (d) If the specification limits are 64±0.05, Estimate Cp and Cpk, interpret these ratios.
+```{r}
+# get Cp and Cpk values
+process.capability(q1,spec.limits=c(63.5,64.5))
+print('From above graph and information,we have\nCp = 0.282\nCpk = 0.245')
+print('Since Cp < 1, then the process is bound to produce rejections even when the mean is set on target.')
+print('Here since Cpk is low, we have to consider ways to improve our process such as reducing its variance or shifting its location')
+print('Here since Cp and Cpk are approximately equal, the process is centered between the specification limits')
+```
+
+# Question 2
+The data represent the number of dictation mistakes in every 100 words.
+```{r}
+# Read sheet 2 of excel sheet
+xm <- read.xlsx("QCC.xlsx",2)
+xm
+```
+
+## (a) Which control chart is good for this type of data?
+```{r}
+print('For this type of data NP control Chart is used because in NP control chart we see the numbner of defectives in samples of given sizes')
+```
+
+## (b) Find the control limits and plot the chart.
+```{r}
+# Plot the xm type chart
+q4 = qcc(xm,type="np",sizes = 100)
+```
+
+## (c) Is the process in control? If not, eliminate out of control points. Revise the control limits.
+```{r}
+# find the points which violate the control process
+shewhart.rules(q4)
+out = c(17)
+xm2 = xm[-out,]
+# Redraw the np plot plot with revised control limits.
+q5 = qcc(xm2,type="np",sizes = 100)
+```
+
